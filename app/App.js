@@ -1,11 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import GetStarted from './screens/GetStarted';
+import Login from './screens/Login';
+import Report from './screens/Report';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <GetStarted/>
+      {/* <GetStarted/> */}
+      {/* <Login/> */}
+      <Report/>
     </View>
   );
 }
