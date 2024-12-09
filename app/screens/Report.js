@@ -1,7 +1,6 @@
 import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { SegmentedButtons, TextInput } from "react-native-paper";
-
 import * as Location from "expo-location";
 
 function Report() {

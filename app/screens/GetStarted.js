@@ -8,14 +8,14 @@ import {
   Pressable,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-// import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 const GetStarted = () => {
-//   const navigation = useNavigation();
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.iconButton}>
-        <Pressable>
+        <Pressable onPress={() => navigation.navigate("Login")}>
           <Icon name="arrow-right" size={20} color="#FFFFFF" />
         </Pressable>
       </TouchableOpacity>
