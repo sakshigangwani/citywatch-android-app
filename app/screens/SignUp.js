@@ -6,17 +6,15 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Pressable,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithRedirect } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../config/Firebase";
 
 const auth = getAuth(app);
-// const provider = new GoogleAuthProvider();
 
-const Login = () => {
+const SignUp = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,30 +34,6 @@ const Login = () => {
       });
   }
 
-  const handleSignInUsingGoogle = () => {
-    // signInWithPopup(auth, provider)
-    //   .then((result) => {
-    //     // This gives you a Google Access Token. You can use it to access the Google API.
-    //     const credential = GoogleAuthProvider.credentialFromResult(result);
-    //     const token = credential.accessToken;
-    //     // The signed-in user info.
-    //     const user = result.user;
-    //     // IdP data available using getAdditionalUserInfo(result)
-    //     // ...
-    //     navigation.navigate("BottomTabs");
-    //   }).catch((error) => {
-    //     // Handle Errors here.
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     // The email of the user's account used.
-    //     const email = error.customData.email;
-    //     // The AuthCredential type that was used.
-    //     const credential = GoogleAuthProvider.credentialFromError(error);
-    //     // ...
-    //   });
-    // signInWithRedirect(auth, provider);
-  }
-
   return (
     <View style={styles.container}>
       <Image
@@ -71,8 +45,8 @@ const Login = () => {
       </View>
       <View style={styles.loginContainer}>
         <Text style={styles.loginMsg}>
-          <Text style={styles.boldText}>Create a free account </Text>
-          or log in to get started using CityWatch
+          <Text style={styles.boldText}>Already have an account?</Text> or sign up
+          to get started using CityWatch
         </Text>
       </View>
       <View style={styles.emailContainer}>
@@ -117,7 +91,7 @@ const Login = () => {
         <Text style={styles.loginButtonText}>Login</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.googleButton} onPress={handleSignInUsingGoogle}>
+      <TouchableOpacity style={styles.googleButton}>
         <Image
           source={require("../assets/images/logo.png")}
           style={styles.googleLogo}
@@ -128,7 +102,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
 
 const styles = StyleSheet.create({
   container: {
