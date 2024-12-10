@@ -11,23 +11,26 @@ import BottomNavigation from './components/BottomNavigation';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AuthProvider from './contexts/authContext';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <PaperProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="BottomTabs">
-          <Stack.Screen name='GetStarted' component={GetStarted} />
-          <Stack.Screen name='Login' component={Login} />
-          <Stack.Screen name='SignUp' component={SignUp} />
-          <Stack.Screen name='Report' component={Report} />
-          <Stack.Screen name='Home' component={Home} />
-          <Stack.Screen name='Account' component={Account} />
-          <Stack.Screen name='BottomTabs' component={BottomNavigation} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <AuthProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="BottomTabs">
+            <Stack.Screen name='GetStarted' component={GetStarted} />
+            <Stack.Screen name='Login' component={Login} />
+            <Stack.Screen name='SignUp' component={SignUp} />
+            <Stack.Screen name='Report' component={Report} />
+            <Stack.Screen name='Home' component={Home} />
+            <Stack.Screen name='Account' component={Account} />
+            <Stack.Screen name='BottomTabs' component={BottomNavigation} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthProvider>
     </PaperProvider>
   );
 }

@@ -4,6 +4,10 @@ import { SegmentedButtons, TextInput, Button, Snackbar, Portal } from "react-nat
 import * as Location from "expo-location";
 import * as ImagePicker from 'expo-image-picker';
 import { Video } from "expo-av";
+import * as Crypto from 'expo-crypto';
+import { AuthContext } from "../contexts/authContext";
+import { doc, getDoc, GeoPoint, Timestamp, setDoc } from "firebase/firestore";
+import { db } from "../config/Firebase";
 
 function Report() {
   const [value, setValue] = React.useState("");
@@ -11,6 +15,7 @@ function Report() {
   const [description, setDescription] = React.useState("");
   const [location, setLocation] = React.useState(null);
   const [errorMsg, setErrorMsg] = React.useState(null);
+  const authContext = React.useContext(AuthContext);
 
   const [photos, setPhotos] = React.useState([]);
   const [videos, setVideos] = React.useState([]);
@@ -56,6 +61,31 @@ function Report() {
     }
   };
 
+  const reportSubmitted = async () => {
+    const reportID = Crypto.randomUUID();
+    const reportData = {
+      address: address,
+      blood_oxygen: null,
+      body_temp: null,
+      date_time: Timestamp.fromDate(new Date()),
+      description: description,
+      heart_rate: null,
+      id: reportID,
+      location: new GeoPoint(location.coords.latitude, location.coords.longitude),
+      photo: [],
+      type_of_event: 'User App',
+      user_id: authContext.user.id,
+      user_type: value,
+      video: []
+    }
+    console.log(reportData);
+    try{
+      await setDoc(doc(db,"reports",reportID), reportData);
+    }catch(err){
+      console.log(err);
+    }
+  }
+
   React.useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -80,12 +110,12 @@ function Report() {
           style={styles.segmentedButtonContainer}
           buttons={[
             {
-              value: "victim",
+              value: "Victim",
               label: "Victim",
               style: styles.button,
             },
             {
-              value: "witness",
+              value: "Witness",
               label: "Witness",
               style: styles.button,
             },
@@ -136,7 +166,7 @@ function Report() {
             {snackbarContent}
           </Snackbar>
         </Portal>
-        <Button mode="elevated" style={styles.submitButton}>Submit</Button>
+        <Button mode="elevated" style={styles.submitButton} onPress={reportSubmitted}>Submit</Button>
       </View>
     </ScrollView>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Image,
@@ -12,6 +12,9 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithRedirect } from "firebase/auth";
 import app from "../config/Firebase";
+import { AuthContext } from "../contexts/authContext";
+import { db } from "../config/Firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const auth = getAuth(app);
 // const provider = new GoogleAuthProvider();
@@ -21,14 +24,21 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const authContext = useContext(AuthContext);
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed in 
         // const user = userCredential.user;
         // ...
-        navigation.navigate("BottomTabs");
+        const user = userCredential.user;
+        const docRef = doc(db, "users", user.uid);
+        const docSnapshot = await getDoc(docRef);
+        if (docSnapshot.exists()) {
+          authContext.setUser(docSnapshot.data());
+          navigation.navigate("BottomTabs");
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
